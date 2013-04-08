@@ -1,0 +1,30 @@
+{
+  "name": "s3cache",
+  "version": "0.0.0",
+  "description": "An S3 backed cache for resources that are expensive to generate but don't warrant storage in an in-memory cache or standard DB (because of size or number and control over persistence). Use S3 lifecycle management to set the duration to hold on to cached resources.",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "jasmine-node --coffee spec"
+  },
+  "dependencies": {
+    "aws-sdk": "latest",
+    "underscore": ">= 1.4.0",
+    "coffee-script": ">= 1.6.0",
+    "q": "latest"
+  },
+  "devDependencies": {
+    "jasmine-node": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/populr/s3cache_node.git"
+  },
+  "keywords": [
+    "s3",
+    "cache"
+  ],
+  "author": "Daniel W. Nelson",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "5657c48b7df740f30a87dc622c9eb98efb9a1267"
+}
