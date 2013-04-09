@@ -1,7 +1,7 @@
 var originalRequire = require;
 var requireOverrides = {};
 
-stubModule = function(name) {
+moduleDouble = function(name) {
   var double = originalRequire(name);
   double['double'] = name;
   requireOverrides[name] = double;
