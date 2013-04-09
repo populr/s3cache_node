@@ -2,7 +2,7 @@ class exports.S3Cache
 
   constructor: (settings) ->
     @bucket = settings.bucket
-    @name = settings.name
+    @cache_name = settings.cache
     AWS = require('aws-sdk')
     @s3 = new AWS.S3.Client
       accessKeyId: settings.aws_access_key_id
@@ -33,6 +33,6 @@ class exports.S3Cache
 
   s3Key: (options) ->
     options.version ||= ''
-    key = "#{@name}/#{options.key}/#{options.version}"
+    key = "#{@cache_name}/#{options.key}/#{options.version}"
     key.replace(/\/$/, '').replace(/\/$/, '')
 

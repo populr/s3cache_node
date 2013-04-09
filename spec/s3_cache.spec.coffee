@@ -8,7 +8,7 @@ describe "S3Cache", ->
       AWS = stubModule('aws-sdk')
       spyOn(AWS.S3, 'Client')
 
-      cache = new S3Cache(bucket: 'bucket_name', name: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
+      cache = new S3Cache(bucket: 'bucket_name', cache: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
 
       expect(AWS.S3.Client).toHaveBeenCalledWith
         accessKeyId: 'aws_access_key_id'
@@ -17,13 +17,13 @@ describe "S3Cache", ->
 
 
     it "should save the cache name", ->
-      cache = new S3Cache(bucket: 'bucket_name', name: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
-      expect(cache.name).toEqual 'cache_name'
+      cache = new S3Cache(bucket: 'bucket_name', cache: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
+      expect(cache.cache_name).toEqual 'cache_name'
 
 
   describe "#s3Key", ->
     beforeEach ->
-      @cache = new S3Cache(bucket: 'bucket_name', name: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
+      @cache = new S3Cache(bucket: 'bucket_name', cache: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
 
     it "should create a key from the cache_name, options, and version", ->
       options =
@@ -49,7 +49,7 @@ describe "S3Cache", ->
 
   describe "#writeCache", ->
     beforeEach ->
-      @cache = new S3Cache(bucket: 'bucket_name', name: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
+      @cache = new S3Cache(bucket: 'bucket_name', cache: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
       @cache.s3Key = ->
         'hello_world/2'
       @spyOn(@cache.s3, 'putObject')
@@ -95,7 +95,7 @@ describe "S3Cache", ->
 
   describe "#checkCache", ->
     beforeEach ->
-      @cache = new S3Cache(bucket: 'bucket_name', name: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
+      @cache = new S3Cache(bucket: 'bucket_name', cache: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
       @cache.s3Key = ->
         'hello_world/2'
       @spyOn(@cache.s3, 'getObject')
