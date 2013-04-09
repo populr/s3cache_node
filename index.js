@@ -1,1 +1,1 @@
-require('./libs/s3_cache').S3Cache
+module.exports = require('./libs/s3_cache').S3Cache
