@@ -9,8 +9,7 @@
   "dependencies": {
     "aws-sdk": "latest",
     "underscore": ">= 1.4.0",
-    "coffee-script": ">= 1.6.0",
-    "q": "latest"
+    "coffee-script": ">= 1.6.0"
   },
   "devDependencies": {
     "jasmine-node": "latest"
