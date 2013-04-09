@@ -8,7 +8,7 @@ describe "S3Cache", ->
       AWS = stubModule('aws-sdk')
       spyOn(AWS.S3, 'Client')
 
-      cache = new S3Cache('cache_name', 'aws_access_key_id', 'aws_secret_access_key')
+      cache = new S3Cache('bucket_name', 'cache_name', 'aws_access_key_id', 'aws_secret_access_key')
 
       expect(AWS.S3.Client).toHaveBeenCalledWith
         accessKeyId: 'aws_access_key_id'
@@ -17,19 +17,19 @@ describe "S3Cache", ->
 
 
     it "should save the cache name", ->
-      cache = new S3Cache('cache_name', 'aws_access_key_id', 'aws_secret_access_key')
+      cache = new S3Cache('bucket_name', 'cache_name', 'aws_access_key_id', 'aws_secret_access_key')
       expect(cache.name).toEqual 'cache_name'
 
 
   describe "#s3Key", ->
     beforeEach ->
-      @cache = new S3Cache('cache_name', 'aws_access_key_id', 'aws_secret_access_key')
+      @cache = new S3Cache('bucket_name', 'cache_name', 'aws_access_key_id', 'aws_secret_access_key')
 
-    it "should create a key from the key in the options / the version", ->
+    it "should create a key from the cache_name, options, and version", ->
       options =
         key: 'hello_world'
         version: '2'
-      expect(@cache.s3Key(options)).toEqual('hello_world/2')
+      expect(@cache.s3Key(options)).toEqual('cache_name/hello_world/2')
 
 
     describe "when the version is null", ->
@@ -37,26 +37,26 @@ describe "S3Cache", ->
       it "should omit the version from the key", ->
         options =
           key: 'hello_world'
-        expect(@cache.s3Key(options)).toEqual('hello_world')
+        expect(@cache.s3Key(options)).toEqual('cache_name/hello_world')
 
 
       describe "when the base key ends in a slash", ->
         it "should omit the trailing slash (so that we can navigate to the object in the S3 console)", ->
           options =
             key: 'hello_world/'
-          expect(@cache.s3Key(options)).toEqual('hello_world')
+          expect(@cache.s3Key(options)).toEqual('cache_name/hello_world')
 
 
   describe "#writeCache", ->
     beforeEach ->
-      @cache = new S3Cache('cache_name', 'aws_access_key_id', 'aws_secret_access_key')
+      @cache = new S3Cache('bucket_name', 'cache_name', 'aws_access_key_id', 'aws_secret_access_key')
       @cache.s3Key = ->
         'hello_world/2'
       @spyOn(@cache.s3, 'putObject')
       @callback = ->
 
 
-    it "should put the cache data to s3 with a key from #s3Key, an acl of private, and a storage class of reduced redundancy", ->
+     it "should put the cache data to s3 with a key from #s3Key, an acl of private, and a storage class of reduced redundancy", ->
       options =
         data: 'Content to cache'
         callback: @callback
@@ -66,7 +66,7 @@ describe "S3Cache", ->
       expect(@cache.s3.putObject).toHaveBeenCalledWith
         ACL: 'private'
         Body: 'Content to cache'
-        Bucket: 'cache_name'
+        Bucket: 'bucket_name'
         Key: 'hello_world/2'
         StorageClass: 'reduced-redundancy'
       , @callback
@@ -85,7 +85,7 @@ describe "S3Cache", ->
         expect(@cache.s3.putObject).toHaveBeenCalledWith
           ACL: 'private'
           Body: 'Content to cache'
-          Bucket: 'cache_name'
+          Bucket: 'bucket_name'
           Key: 'hello_world/2'
           StorageClass: 'reduced-redundancy'
           ServerSideEncryption: 'aes256'
@@ -95,7 +95,7 @@ describe "S3Cache", ->
 
   describe "#checkCache", ->
     beforeEach ->
-      @cache = new S3Cache('cache_name', 'aws_access_key_id', 'aws_secret_access_key')
+      @cache = new S3Cache('bucket_name', 'cache_name', 'aws_access_key_id', 'aws_secret_access_key')
       @cache.s3Key = ->
         'hello_world/2'
       @spyOn(@cache.s3, 'getObject')
@@ -108,7 +108,7 @@ describe "S3Cache", ->
       @cache.checkCache(options)
 
       expect(@cache.s3.getObject).toHaveBeenCalledWith
-        Bucket: 'cache_name'
+        Bucket: 'bucket_name'
         Key: 'hello_world/2'
       , @callback
 

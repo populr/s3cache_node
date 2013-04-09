@@ -1,6 +1,7 @@
 class exports.S3Cache
 
-  constructor: (cache_name, aws_access_key_id, aws_secret_access_key) ->
+  constructor: (bucket_name, cache_name, aws_access_key_id, aws_secret_access_key) ->
+    @bucket = bucket_name
     @name = cache_name
     AWS = require('aws-sdk')
     @s3 = new AWS.S3.Client
@@ -13,7 +14,7 @@ class exports.S3Cache
     settings =
       ACL: 'private'
       Body: options.data
-      Bucket: @name
+      Bucket: @bucket
       Key: @s3Key(options)
       StorageClass: 'reduced-redundancy'
 
@@ -24,7 +25,7 @@ class exports.S3Cache
 
   checkCache: (options) ->
     settings =
-      Bucket: @name
+      Bucket: @bucket
       Key: @s3Key(options)
 
     @s3.getObject(settings, options.callback)
@@ -32,6 +33,6 @@ class exports.S3Cache
 
   s3Key: (options) ->
     options.version ||= ''
-    key = "#{options.key}/#{options.version}"
+    key = "#{@name}/#{options.key}/#{options.version}"
     key.replace(/\/$/, '').replace(/\/$/, '')
 
