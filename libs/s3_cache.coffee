@@ -1,12 +1,12 @@
 class exports.S3Cache
 
-  constructor: (bucket_name, cache_name, aws_access_key_id, aws_secret_access_key) ->
-    @bucket = bucket_name
-    @name = cache_name
+  constructor: (settings) ->
+    @bucket = settings.bucket
+    @name = settings.name
     AWS = require('aws-sdk')
     @s3 = new AWS.S3.Client
-      accessKeyId: 'aws_access_key_id'
-      secretAccessKey: 'aws_secret_access_key'
+      accessKeyId: settings.aws_access_key_id
+      secretAccessKey: settings.aws_secret_access_key
       sslEnabled: true
 
 
