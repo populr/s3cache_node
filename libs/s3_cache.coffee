@@ -16,7 +16,7 @@ class exports.S3Cache
       Body: options.data
       Bucket: @bucket
       Key: @s3Key(options)
-      StorageClass: 'reduced-redundancy'
+      StorageClass: 'REDUCED_REDUNDANCY'
 
     settings.ServerSideEncryption = 'aes256' if options?.encrypt
 
@@ -24,11 +24,20 @@ class exports.S3Cache
 
 
   checkCache: (options) ->
+    @checkCacheCallback = options.callback
+
     settings =
       Bucket: @bucket
       Key: @s3Key(options)
 
-    @s3.getObject(settings, options.callback)
+    @s3.getObject(settings, @getObjectCallback)
+
+
+  getObjectCallback: (err, data) =>
+    if err
+      @checkCacheCallback(err, data)
+    else
+      @checkCacheCallback(null, data.Body)
 
 
   s3Key: (options) ->

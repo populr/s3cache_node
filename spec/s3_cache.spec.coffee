@@ -68,7 +68,7 @@ describe "S3Cache", ->
         Body: 'Content to cache'
         Bucket: 'bucket_name'
         Key: 'hello_world/2'
-        StorageClass: 'reduced-redundancy'
+        StorageClass: 'REDUCED_REDUNDANCY'
       , @callback
 
 
@@ -87,7 +87,7 @@ describe "S3Cache", ->
           Body: 'Content to cache'
           Bucket: 'bucket_name'
           Key: 'hello_world/2'
-          StorageClass: 'reduced-redundancy'
+          StorageClass: 'REDUCED_REDUNDANCY'
           ServerSideEncryption: 'aes256'
         , @callback
 
@@ -110,5 +110,5 @@ describe "S3Cache", ->
       expect(@cache.s3.getObject).toHaveBeenCalledWith
         Bucket: 'bucket_name'
         Key: 'hello_world/2'
-      , @callback
+      , @cache.getObjectCallback
 
