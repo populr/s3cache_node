@@ -7,7 +7,7 @@
     "test": "jasmine-node --coffee spec"
   },
   "dependencies": {
-    "aws-sdk": "latest",
+    "aws-sdk": ">= 1.0.0",
     "underscore": ">= 1.4.0",
     "coffee-script": ">= 1.6.0"
   },
