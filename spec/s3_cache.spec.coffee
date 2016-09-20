@@ -6,11 +6,11 @@ describe "S3Cache", ->
   describe "#constructor", ->
     it "should use the aws credentials to initialize an aws sdk object", ->
       AWS = moduleDouble('aws-sdk')
-      spyOn(AWS.S3, 'Client')
+      spyOn(AWS, 'S3')
 
       cache = new S3Cache(bucket: 'bucket_name', cache: 'cache_name', aws_access_key_id: 'aws_access_key_id', aws_secret_access_key: 'aws_secret_access_key')
 
-      expect(AWS.S3.Client).toHaveBeenCalledWith
+      expect(AWS.S3).toHaveBeenCalledWith
         accessKeyId: 'aws_access_key_id'
         secretAccessKey: 'aws_secret_access_key'
         sslEnabled: true
