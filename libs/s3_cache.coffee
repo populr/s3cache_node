@@ -4,7 +4,7 @@ class exports.S3Cache
     @bucket = settings.bucket
     @cache_name = settings.cache
     AWS = require('aws-sdk')
-    @s3 = new AWS.S3.Client
+    @s3 = new AWS.S3
       accessKeyId: settings.aws_access_key_id
       secretAccessKey: settings.aws_secret_access_key
       sslEnabled: true
